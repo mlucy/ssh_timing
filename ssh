@@ -7,7 +7,7 @@ fork {
   cmd = ""
   logging = false
   File.open("data.txt", "a") { |f|
-    File.open(fifo, "r").each {|line|
+    File.open(fifo, "r").each { |line|
       if (m = line.match(/^([^ ]+) read\((.).*"(.*)".* ([0-9]+)$/))
         if m[2] == "4" && m[4].length == 1
           if m[3] == "\\r"
