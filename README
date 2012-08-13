@@ -1,0 +1,6 @@
+HOW TO USE:
+* Run just like ssh: "./ssh name@machine"
+* Enter "#START" to start logging
+* Enter "#STOP" to stop logging (e.g. if you need to enter a password)
+
+Logs timings and amount of data received back to "data.txt".  If "data.txt" already exists, appends to it.
