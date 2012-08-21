@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-
 fifo = `a=$(mktemp); rm $a; mkfifo $a; echo $a`.chomp
 p fifo
 
@@ -7,6 +6,7 @@ fork {
   cmd = ""
   logging = false
   File.open("data.txt", "a") { |f|
+    f.sync = true
     File.open(fifo, "r").each { |line|
       if (m = line.match(/^([^ ]+) read\((.).*"(.*)".* ([0-9]+)$/))
         if m[2] == "4" && m[4].length == 1

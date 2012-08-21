@@ -1,0 +1,33 @@
+#!/usr/bin/ruby
+fifo = `a=$(mktemp); rm $a; mkfifo $a; echo $a`.chomp
+#fifo='/tmp/tst.t'
+p fifo
+
+fork {
+  File.open("netlog.txt", "a") { |f|
+    f.sync = true
+    File.open(fifo, "r").each { |line|
+      regex=/^([0-9]+\.[0-9]+) IP[0-9]? ([^ ]+) > ([^:]+):.*length ([0-9]+)$/
+      if (m = line.match regex)
+        $src = m[2] if !$src && m[3].match(/.*\.ssh/)
+        if $src && m[4] != "0"
+          p line
+          p $src
+          p m[2]
+          p m[3]
+          p "---"
+          if    $src == m[2] then f.write "#{m[1]} KEY\n"
+          elsif $src == m[3] then f.write "#{m[1]} DATA #{m[4]}\n"
+          else                    #f.write "STRAY PACKET: #{line}\n"
+          end
+        end
+      else
+        f.write "UNMATCHED: #{line}"
+      end
+    }
+  }
+}
+
+$stdout.reopen(fifo, "w")
+exec('tcpdump', '-l', '-tt', *ARGV)
+$stdout.close

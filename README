@@ -1,6 +1,14 @@
-HOW TO USE:
+SSH:
 * Run just like ssh: "./ssh name@machine"
 * Enter "#START" to start logging
 * Enter "#STOP" to stop logging (e.g. if you need to enter a password)
 
-Logs timings and amount of data received back to "data.txt".  If "data.txt" already exists, appends to it.
+Appends timings and amount of data received back to "data.txt".
+
+CAPTURE:
+* Needs to be run as root
+* Takes tcpdump options -- make sure not to change output!
+* Attaches to first connection it sees.  Needs to be restarted to change.
+* e.g. 'sudo ./capture -i lo port 22'
+
+Appends timings and amount of data received to "netlog.txt".
